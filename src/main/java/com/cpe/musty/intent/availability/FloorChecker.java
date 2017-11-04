@@ -40,7 +40,7 @@ public class FloorChecker {
 
     private JSONObject getJsonFromEndpoint(final String endpoint) {
         try {
-            return JsonReader.readJsonFromUrl(endpoint);
+            return JsonReader.readJson(endpoint);
         } catch (Exception e) {
             throw new RuntimeException("Invalid endpoint: " + endpoint, e);
         }
