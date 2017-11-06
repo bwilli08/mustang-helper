@@ -23,6 +23,8 @@ import com.cpe.musty.intent.availability.FloorChecker;
 import com.cpe.musty.intent.availability.FloorSynonyms;
 import com.cpe.musty.intent.helper.AskResponseWrapper;
 import com.cpe.musty.intent.pass.CheckPASSIntentHandler;
+import com.cpe.musty.intent.pass.DepartmentTranslator;
+import com.cpe.musty.intent.pass.PASSClassRetriever;
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -39,7 +41,7 @@ public class MustangHelperSpeechlet implements Speechlet {
      */
     // @formatter:off
     private static final Map<String, IntentHandler> INTENT_HANDLERS = ImmutableMap.of(
-            "CheckPASSIntent", new CheckPASSIntentHandler(),
+            "CheckPASSIntent", new CheckPASSIntentHandler(new DepartmentTranslator(), new PASSClassRetriever()),
             "ComputerAvailability", new ComputerAvailabilityIntentHandler(new FloorChecker(), new FloorSynonyms()),
             "AMAZON.HelpIntent", HelpIntentHandler.getInstance(),
             "AMAZON.StopIntent", new StopIntentHandler(),

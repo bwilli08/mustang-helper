@@ -10,12 +10,15 @@ import org.json.JSONObject;
 
 import com.cpe.musty.utility.JsonReader;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class PASSClassRetriever {
 
     private static final String SESSION_ID = JSessionCookieRetriever.getCookie();
     private static final String ENDPOINT = "https://pass.calpoly.edu/searchByDept.json?deptId=";
 
-    public static List<CalPolyClass> getClassesForDeptId(Integer deptId) {
+    public List<CalPolyClass> getClassesForDeptId(Integer deptId) {
         try {
             URL url = new URL(ENDPOINT + deptId.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

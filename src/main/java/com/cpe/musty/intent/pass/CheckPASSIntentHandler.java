@@ -9,10 +9,19 @@ import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.cpe.musty.intent.IntentHandler;
 import com.cpe.musty.intent.helper.AskResponseWrapper;
 
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+
+@AllArgsConstructor
 public class CheckPASSIntentHandler implements IntentHandler {
 
     // Key to get the course number from the intent
     private static final String COURSE_SLOT = "Course";
+
+    @NonNull
+    private final DepartmentTranslator departmentTranslator;
+    @NonNull
+    private final PASSClassRetriever passClassRetriever;
 
     @Override
     public SpeechletResponse handle(Intent intent) {
@@ -23,10 +32,10 @@ public class CheckPASSIntentHandler implements IntentHandler {
             String departmentName = courseString[0];
             Integer courseNumber = Integer.valueOf(courseString[1]);
 
-            Integer departmentId = DepartmentTranslator.fromShortcode(departmentName)
+            Integer departmentId = departmentTranslator.fromShortcode(departmentName)
                     .orElseThrow(() -> new RuntimeException("Invalid department name."));
 
-            Optional<CalPolyClass> calPolyClass = PASSClassRetriever.getClassesForDeptId(departmentId).stream()
+            Optional<CalPolyClass> calPolyClass = passClassRetriever.getClassesForDeptId(departmentId).stream()
                     .filter(cls -> cls.getDepartmentName().equals(departmentName)
                             && cls.getCatalogNumber().equals(courseNumber))
                     .findFirst();
