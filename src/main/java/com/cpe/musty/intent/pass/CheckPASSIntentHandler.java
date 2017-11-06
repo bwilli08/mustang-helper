@@ -1,29 +1,40 @@
-package com.cpe.musty.intent;
+package com.cpe.musty.intent.pass;
+
+import java.util.Optional;
 
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.slu.Slot;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
+import com.cpe.musty.intent.IntentHandler;
 import com.cpe.musty.intent.helper.AskResponseWrapper;
 
 public class CheckPASSIntentHandler implements IntentHandler {
 
-    // Key to get the department name from the intent
-    private static final String DEPARTMENT_SLOT = "Department";
     // Key to get the course number from the intent
     private static final String COURSE_SLOT = "Course";
 
     @Override
     public SpeechletResponse handle(Intent intent) {
-        Slot departmentSlot = intent.getSlot(DEPARTMENT_SLOT);
         Slot courseSlot = intent.getSlot(COURSE_SLOT);
 
-        if (isValid(departmentSlot) && isValid(courseSlot)) {
-            String departmentName = departmentSlot.getValue();
-            String courseName = courseSlot.getValue();
+        if (isValid(courseSlot)) {
+            String[] courseString = courseSlot.getValue().split(" ");
+            String departmentName = courseString[0];
+            Integer courseNumber = Integer.valueOf(courseString[1]);
+
+            Integer departmentId = DepartmentTranslator.fromShortcode(departmentName)
+                    .orElseThrow(() -> new RuntimeException("Invalid department name."));
+
+            Optional<CalPolyClass> calPolyClass = PASSClassRetriever.getClassesForDeptId(departmentId).stream()
+                    .filter(cls -> cls.getDepartmentName().equals(departmentName)
+                            && cls.getCatalogNumber().equals(courseNumber))
+                    .findFirst();
+
+            String offered = calPolyClass.isPresent() ? "" : "not";
 
             PlainTextOutputSpeech output = new PlainTextOutputSpeech();
-            output.setText(String.format("Finding information about %s %s", departmentName, courseName));
+            output.setText(String.format("%s %s is %s offered next quarter.", departmentName, courseNumber, offered));
 
             return SpeechletResponse.newTellResponse(output);
         } else {
