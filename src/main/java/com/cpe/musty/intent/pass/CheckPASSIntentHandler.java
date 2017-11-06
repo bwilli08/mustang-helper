@@ -29,7 +29,7 @@ public class CheckPASSIntentHandler implements IntentHandler {
 
         if (isValid(courseSlot)) {
             String[] courseString = courseSlot.getValue().split(" ");
-            String departmentName = courseString[0];
+            String departmentName = courseString[0].toUpperCase();
             Integer courseNumber = Integer.valueOf(courseString[1]);
 
             Integer departmentId = departmentTranslator.fromShortcode(departmentName)

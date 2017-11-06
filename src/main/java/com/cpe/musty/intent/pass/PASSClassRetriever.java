@@ -2,6 +2,7 @@ package com.cpe.musty.intent.pass;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,9 @@ public class PASSClassRetriever {
 
             JSONArray array = JsonReader.readFromURLConnection(conn);
 
-            return array.toList().stream().map(JSONObject::new).map(CalPolyClassTranslator::fromJson)
-                    .collect(Collectors.toList());
+            // Cast to HashMap to ensure the correct JSONObject constructor is used
+            return array.toList().stream().map(HashMap.class::cast).map(JSONObject::new)
+                    .map(CalPolyClassTranslator::fromJson).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
