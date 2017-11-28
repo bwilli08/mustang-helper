@@ -1,1 +1,0 @@
-CheckPASSIntent find information about {Department} {Course}
