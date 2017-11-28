@@ -5,9 +5,9 @@ import java.util.Optional;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.slu.Slot;
 import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.cpe.musty.intent.HelpIntentHandler;
 import com.cpe.musty.intent.IntentHandler;
+import com.cpe.musty.intent.helper.ResponseWrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -34,11 +34,8 @@ public class ComputerAvailabilityIntentHandler implements IntentHandler {
         try {
             long availableComputers = floorChecker.findAvailableComputers(floor);
 
-            PlainTextOutputSpeech output = new PlainTextOutputSpeech();
-            output.setText(String.format("There are %s available computers on that floor.",
+            return ResponseWrapper.newTellResponse(String.format("There are %s available computers on that floor.",
                     Long.toString(availableComputers)));
-
-            return SpeechletResponse.newTellResponse(output);
         } catch (Exception e) {
             HelpIntentHandler helpHandler = HelpIntentHandler.getInstance();
             helpHandler.setSpeechOutput(e.getMessage());

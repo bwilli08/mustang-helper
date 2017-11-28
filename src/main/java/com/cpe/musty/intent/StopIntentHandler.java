@@ -2,16 +2,13 @@ package com.cpe.musty.intent;
 
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.PlainTextOutputSpeech;
+import com.cpe.musty.intent.helper.ResponseWrapper;
 
 public class StopIntentHandler implements IntentHandler {
 
     @Override
     public SpeechletResponse handle(Intent intent) {
-        PlainTextOutputSpeech outputSpeech = new PlainTextOutputSpeech();
-        outputSpeech.setText("Goodbye");
-
-        return SpeechletResponse.newTellResponse(outputSpeech);
+        return ResponseWrapper.newTellResponse("Goodbye.");
     }
 
 }

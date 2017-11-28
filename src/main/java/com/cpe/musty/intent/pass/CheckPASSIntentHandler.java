@@ -5,9 +5,8 @@ import java.util.Optional;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.slu.Slot;
 import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.cpe.musty.intent.IntentHandler;
-import com.cpe.musty.intent.helper.AskResponseWrapper;
+import com.cpe.musty.intent.helper.ResponseWrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -32,8 +31,8 @@ public class CheckPASSIntentHandler implements IntentHandler {
             String departmentName = courseString[0].toUpperCase();
             Integer courseNumber = Integer.valueOf(courseString[1]);
 
-            Integer departmentId = departmentTranslator.fromShortcode(departmentName)
-                    .orElseThrow(() -> new RuntimeException("Invalid department name."));
+            Integer departmentId = departmentTranslator.fromShortcode(departmentName).orElseThrow(
+                    () -> new RuntimeException(String.format("%s is an invalid department name.", departmentName)));
 
             Optional<CalPolyClass> calPolyClass = passClassRetriever.getClassesForDeptId(departmentId).stream()
                     .filter(cls -> cls.getDepartmentName().equals(departmentName)
@@ -42,16 +41,14 @@ public class CheckPASSIntentHandler implements IntentHandler {
 
             String offered = calPolyClass.isPresent() ? "" : "not";
 
-            PlainTextOutputSpeech output = new PlainTextOutputSpeech();
-            output.setText(String.format("%s %s is %s offered next quarter.", departmentName, courseNumber, offered));
-
-            return SpeechletResponse.newTellResponse(output);
+            return ResponseWrapper.newTellResponse(
+                    String.format("%s %s is %s offered next quarter.", departmentName, courseNumber, offered));
         } else {
             String output = "I'm sorry, I didn't understand what course you're asking about. "
                     + "Please specify the department name and course number.";
             String reprompt = "What else can I do?";
 
-            return AskResponseWrapper.newAskResponse(output, reprompt);
+            return ResponseWrapper.newAskResponse(output, reprompt);
         }
     }
 

@@ -16,15 +16,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PASSClassRetriever {
 
-    private static final String SESSION_ID = JSessionCookieRetriever.getCookie();
     private static final String ENDPOINT = "https://pass.calpoly.edu/searchByDept.json?deptId=";
 
     public List<CalPolyClass> getClassesForDeptId(Integer deptId) {
         try {
+            String sessionId = JSessionCookieRetriever.getCookie();
+
             URL url = new URL(ENDPOINT + deptId.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setInstanceFollowRedirects(false);
-            conn.setRequestProperty("Cookie", SESSION_ID);
+            conn.setRequestProperty("Cookie", sessionId);
 
             JSONArray array = JsonReader.readFromURLConnection(conn);
 
@@ -32,7 +33,7 @@ public class PASSClassRetriever {
             return array.toList().stream().map(HashMap.class::cast).map(JSONObject::new)
                     .map(CalPolyClassTranslator::fromJson).collect(Collectors.toList());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("There was an error retrieving information from PASS.", e);
         }
     }
 

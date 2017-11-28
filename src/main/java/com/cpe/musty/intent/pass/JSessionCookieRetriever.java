@@ -43,10 +43,10 @@ public class JSessionCookieRetriever {
                 return searchForCookie(location, retry + 1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Cannot retrieve JSession ID from PASS.", e);
         }
 
-        throw new RuntimeException("Can't find jsession id");
+        throw new RuntimeException("Cannot retrieve JSession ID from PASS.");
     }
 
 }

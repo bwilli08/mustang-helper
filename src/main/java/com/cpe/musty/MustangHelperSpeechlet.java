@@ -14,7 +14,6 @@ import com.amazon.speech.speechlet.SessionStartedRequest;
 import com.amazon.speech.speechlet.Speechlet;
 import com.amazon.speech.speechlet.SpeechletException;
 import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.cpe.musty.intent.CancelIntentHandler;
 import com.cpe.musty.intent.HelpIntentHandler;
 import com.cpe.musty.intent.IntentHandler;
@@ -22,7 +21,7 @@ import com.cpe.musty.intent.StopIntentHandler;
 import com.cpe.musty.intent.availability.ComputerAvailabilityIntentHandler;
 import com.cpe.musty.intent.availability.FloorChecker;
 import com.cpe.musty.intent.availability.FloorSynonyms;
-import com.cpe.musty.intent.helper.AskResponseWrapper;
+import com.cpe.musty.intent.helper.ResponseWrapper;
 import com.cpe.musty.intent.pass.CheckPASSIntentHandler;
 import com.cpe.musty.intent.pass.DepartmentTranslator;
 import com.cpe.musty.intent.pass.PASSClassRetriever;
@@ -68,7 +67,7 @@ public class MustangHelperSpeechlet implements Speechlet {
         String repromptText = "For instructions on what you can say, please say help me.";
 
         // Prompting the user for input
-        return AskResponseWrapper.newAskResponse(speechOutput, repromptText);
+        return ResponseWrapper.newAskResponse(speechOutput, repromptText);
     }
 
     @Override
