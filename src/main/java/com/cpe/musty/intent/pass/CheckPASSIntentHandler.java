@@ -44,9 +44,8 @@ public class CheckPASSIntentHandler implements IntentHandler {
             return ResponseWrapper.newTellResponse(
                     String.format("%s %s is %s offered next quarter.", departmentName, courseNumber, offered));
         } else {
-            String output = "I'm sorry, I didn't understand what course you're asking about. "
-                    + "Please specify the department name and course number.";
-            String reprompt = "What else can I do?";
+            String output = "I'm sorry, I didn't understand what course you're asking about.";
+            String reprompt = "Please specify the department name and course number.";
 
             return ResponseWrapper.newAskResponse(output, reprompt);
         }
