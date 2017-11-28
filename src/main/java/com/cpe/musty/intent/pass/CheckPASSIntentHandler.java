@@ -39,10 +39,10 @@ public class CheckPASSIntentHandler implements IntentHandler {
                             && cls.getCatalogNumber().equals(courseNumber))
                     .findFirst();
 
-            String offered = calPolyClass.isPresent() ? "" : "not";
+            String offered = calPolyClass.isPresent() ? "is" : "is not";
 
             return ResponseWrapper.newTellResponse(
-                    String.format("%s %s is %s offered next quarter.", departmentName, courseNumber, offered));
+                    String.format("%s %s %s offered next quarter.", departmentName, courseNumber, offered));
         } else {
             String output = "I'm sorry, I didn't understand what course you're asking about.";
             String reprompt = "Please specify the department name and course number.";
