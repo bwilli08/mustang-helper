@@ -26,6 +26,10 @@ public class FloorChecker {
     private static final int AVAILABLE_STATUS = 0;
     private static final String STATUS_KEY = "status";
 
+    public long findAllAvailableComputers() {
+        return FLOOR_ENDPOINTS.keySet().stream().map(this::findAvailableComputers).reduce((x1,x2) -> x1 + x2).get();
+    }
+
     public long findAvailableComputers(final Integer floorNumber) {
         if (FLOOR_ENDPOINTS.containsKey(floorNumber)) {
             final String endpoint = FLOOR_ENDPOINTS.get(floorNumber);

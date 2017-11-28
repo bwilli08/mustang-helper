@@ -28,14 +28,21 @@ public class ComputerAvailabilityIntentHandler implements IntentHandler {
         Slot fl_number = intent.getSlot(FL_NUMBER);
         Slot fl_string = intent.getSlot(FL_STRING);
 
-        Integer floor = getFloorNumber(fl_number, fl_string);
+        Optional<Integer> floor = getFloorNumber(fl_number, fl_string);
 
         // For now, just ignore the floor number slot and check the first floor
         try {
-            long availableComputers = floorChecker.findAvailableComputers(floor);
+            if (floor.isPresent()) {
+                long availableComputers = floorChecker.findAvailableComputers(floor.get());
 
-            return ResponseWrapper.newTellResponse(String.format("There are %s available computers on that floor.",
-                    Long.toString(availableComputers)));
+                return ResponseWrapper.newTellResponse(String.format("There are %s available computers on that floor.",
+                        Long.toString(availableComputers)));
+            } else {
+                long availableComputers = floorChecker.findAllAvailableComputers();
+
+                return ResponseWrapper.newTellResponse(String.format("There are %s available computers in the library.",
+                        Long.toString(availableComputers)));
+            }
         } catch (Exception e) {
             HelpIntentHandler helpHandler = HelpIntentHandler.getInstance();
             helpHandler.setSpeechOutput(e.getMessage());
@@ -43,16 +50,16 @@ public class ComputerAvailabilityIntentHandler implements IntentHandler {
         }
     }
 
-    private Integer getFloorNumber(final Slot fl_num, final Slot fl_str) {
+    private Optional<Integer> getFloorNumber(final Slot fl_num, final Slot fl_str) {
         if (fl_num != null && fl_num.getValue() != null) {
-            return Integer.valueOf(fl_num.getValue());
+            return Optional.of(Integer.valueOf(fl_num.getValue()));
         } else if (fl_str != null && fl_str.getValue() != null) {
             Optional<Integer> floor = floorSynonyms.findMatch(fl_str.getValue());
 
-            return floor.orElseThrow(
-                    () -> new RuntimeException(String.format("%s is an invalid floor.", fl_str.getValue())));
+            return Optional.of(floor.orElseThrow(
+                    () -> new RuntimeException(String.format("%s is an invalid floor.", fl_str.getValue()))));
         }
 
-        throw new RuntimeException("There was an error checking floors.");
+        return Optional.empty();
     }
 }
