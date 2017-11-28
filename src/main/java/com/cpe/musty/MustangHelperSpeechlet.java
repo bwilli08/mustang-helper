@@ -14,6 +14,7 @@ import com.amazon.speech.speechlet.SessionStartedRequest;
 import com.amazon.speech.speechlet.Speechlet;
 import com.amazon.speech.speechlet.SpeechletException;
 import com.amazon.speech.speechlet.SpeechletResponse;
+import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.cpe.musty.intent.CancelIntentHandler;
 import com.cpe.musty.intent.HelpIntentHandler;
 import com.cpe.musty.intent.IntentHandler;
@@ -81,11 +82,10 @@ public class MustangHelperSpeechlet implements Speechlet {
             try {
                 return INTENT_HANDLERS.get(intentName).handle(intent);
             } catch (Exception e) {
-                throw new SpeechletException(e);
             }
         }
 
-        throw new SpeechletException("Invalid Intent");
+        return HelpIntentHandler.getInstance().handle(intent);
     }
 
     @Override

@@ -34,15 +34,15 @@ public class FloorChecker {
 
             return computers.stream().filter(o -> o.getInt(STATUS_KEY) == AVAILABLE_STATUS).count();
         }
-        
-        throw new RuntimeException("Invalid floor number.");
+
+        throw new RuntimeException(String.format("%s is an invalid floor number.", floorNumber.toString()));
     }
 
     private JSONObject getJsonFromEndpoint(final String endpoint) {
         try {
             return JsonReader.readFromUrlString(endpoint);
         } catch (Exception e) {
-            throw new RuntimeException("Invalid endpoint: " + endpoint, e);
+            throw new RuntimeException("There was an error checking computer availability.", e);
         }
     }
 

@@ -6,6 +6,7 @@ import com.amazon.speech.slu.Intent;
 import com.amazon.speech.slu.Slot;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
+import com.cpe.musty.intent.HelpIntentHandler;
 import com.cpe.musty.intent.IntentHandler;
 
 import lombok.AllArgsConstructor;
@@ -39,7 +40,9 @@ public class ComputerAvailabilityIntentHandler implements IntentHandler {
 
             return SpeechletResponse.newTellResponse(output);
         } catch (Exception e) {
-            throw new RuntimeException("There was an error checking floors.");
+            HelpIntentHandler helpHandler = HelpIntentHandler.getInstance();
+            helpHandler.setSpeechOutput(e.getMessage());
+            return helpHandler.handle(intent);
         }
     }
 
@@ -49,7 +52,8 @@ public class ComputerAvailabilityIntentHandler implements IntentHandler {
         } else if (fl_str != null && fl_str.getValue() != null) {
             Optional<Integer> floor = floorSynonyms.findMatch(fl_str.getValue());
 
-            return floor.orElseThrow(() -> new RuntimeException("No floor match."));
+            return floor.orElseThrow(
+                    () -> new RuntimeException(String.format("%s is an invalid floor.", fl_str.getValue())));
         }
 
         throw new RuntimeException("There was an error checking floors.");
