@@ -61,8 +61,8 @@ public class MustangHelperSpeechlet implements Speechlet {
     public SpeechletResponse onLaunch(final LaunchRequest request, final Session session) throws SpeechletException {
         log.info("onLaunch requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
 
-        String speechOutput = "Welcome to the Mustang Helper. You can reserve a book, check how busy the library "
-                + "is, or ask about PASS classes and teachers. How can I help you?";
+        String speechOutput = "Welcome to the Mustang Helper. You can check if there are open computers in the library "
+                + "or ask what classes are offered next quarter. How can I help you?";
 
         String repromptText = "For instructions on what you can say, please say help me.";
 
