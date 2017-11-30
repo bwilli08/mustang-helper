@@ -28,7 +28,7 @@ public class ResponseWrapper {
 
         return SpeechletResponse.newAskResponse(outputSpeech, reprompt);
     }
-    
+
     /**
      * Wrapper for creating the Ask response. The OutputSpeech and
      * {@link Reprompt} objects are created from the input strings.

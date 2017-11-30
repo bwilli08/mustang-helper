@@ -21,10 +21,8 @@ public class FloorSynonyms {
     // @formatter:on
 
     public Optional<Integer> findMatch(final String utterance) {
-        return syns.entrySet().stream()
-                .filter(entry -> entry.getValue().contains(utterance))
-                .map(Entry::getKey)
+        return syns.entrySet().stream().filter(entry -> entry.getValue().contains(utterance)).map(Entry::getKey)
                 .findFirst();
     }
-    
+
 }

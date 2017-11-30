@@ -29,7 +29,8 @@ public class PASSClassRetriever {
 
             JSONArray array = JsonReader.readFromURLConnection(conn);
 
-            // Cast to HashMap to ensure the correct JSONObject constructor is used
+            // Cast to HashMap to ensure the correct JSONObject constructor is
+            // used
             return array.toList().stream().map(HashMap.class::cast).map(JSONObject::new)
                     .map(CalPolyClassTranslator::fromJson).collect(Collectors.toList());
         } catch (Exception e) {
